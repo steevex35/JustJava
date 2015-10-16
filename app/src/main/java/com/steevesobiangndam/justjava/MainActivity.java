@@ -2,6 +2,7 @@ package com.steevesobiangndam.justjava;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -76,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
         //Log.v("MainActivity","check -->"+hasWhippedcream);
         int price=calculatePrice(quantity, hasWhippedcream, haschocolat);
         String priceMessage=createOrderSummary(quantity, nameString,price,hasWhippedcream,haschocolat);
-        displayMessage(priceMessage);
+        //displayMessage(priceMessage);
+
         //pour envoyer la facture en email
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/html");
@@ -126,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
      * This method displays the given text on the screen.
      */
     private void displayMessage(String message) {
-        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
+        //TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
 
 
-        orderSummaryTextView.setText(message);
+        //orderSummaryTextView.setText(message);
     }
 }
