@@ -1,11 +1,13 @@
 package com.steevesobiangndam.justjava;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 
@@ -14,14 +16,14 @@ import java.text.NumberFormat;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private int quantity=0;
+    private int quantity=1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        displayQuantity(quantity);
 
 
     }
@@ -29,8 +31,16 @@ public class MainActivity extends AppCompatActivity {
      * This methode is called for increment value of quantity
      */
     public void increment(View view){
-        quantity++;
-        displayQuantity(quantity);
+        if (quantity<100) {
+            quantity++;
+            displayQuantity(quantity);
+        }
+        else {
+            quantity = 100;
+            displayQuantity(quantity);
+            Toast toast = Toast.makeText(this, "Impossible de faire plus de café", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     /**
@@ -38,20 +48,22 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void decrement(View view){
-        if (quantity>0) {
+        if (quantity>1) {
             quantity--;
             displayQuantity(quantity);
         }
         else {
-            quantity = 0;
+            quantity =1;
             displayQuantity(quantity);
+            Toast toast = Toast.makeText(this,"Impossible de commander moins de café", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
     /**
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        int price=calculatePrice(quantity);
+
 
         CheckBox whippedCreamChekBox = (CheckBox) findViewById(R.id.whipped_cream_checkbox);
         CheckBox chocolat = (CheckBox) findViewById(R.id.chocolat_checkbox);
@@ -61,16 +73,25 @@ public class MainActivity extends AppCompatActivity {
         boolean haschocolat= chocolat.isChecked();
         boolean hasWhippedcream = whippedCreamChekBox.isChecked();
         //Log.v("MainActivity","check -->"+hasWhippedcream);
+        int price=calculatePrice(quantity,hasWhippedcream,haschocolat);
         String priceMessage=createOrderSummary(quantity, nameString,price,hasWhippedcream,haschocolat);
         displayMessage(priceMessage);
     }
 
     /**
-     * Calculate price methode
+     *
+     * @param quantity numbero of coffee
+     * @param addCream state checkBox for add or not a whippedCream
+     * @param addChocolat state checkBox for add or not a chocolat
+     * @return final price
      */
-   private int calculatePrice(int quantity){
-        int price=quantity*5;
-        return price;
+   private int calculatePrice(int quantity, boolean addCream, boolean addChocolat){
+       int basePrice=5;
+       if(addCream) // add 1$ if addCream is true (isChecked)
+           basePrice=basePrice+1;
+       if(addChocolat)// add 2$ if addChocolate is true (isChecked)
+          basePrice=basePrice+2;
+        return basePrice*quantity;
     }
     private String createOrderSummary(int number,String name,int price, boolean addWhipperCream, boolean addChocolat){
 
