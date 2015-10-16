@@ -1,6 +1,7 @@
 package com.steevesobiangndam.justjava;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -73,9 +74,15 @@ public class MainActivity extends AppCompatActivity {
         boolean haschocolat= chocolat.isChecked();
         boolean hasWhippedcream = whippedCreamChekBox.isChecked();
         //Log.v("MainActivity","check -->"+hasWhippedcream);
-        int price=calculatePrice(quantity,hasWhippedcream,haschocolat);
+        int price=calculatePrice(quantity, hasWhippedcream, haschocolat);
         String priceMessage=createOrderSummary(quantity, nameString,price,hasWhippedcream,haschocolat);
         displayMessage(priceMessage);
+        //pour envoyer la facture en email
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/html");
+        intent.putExtra(Intent.EXTRA_SUBJECT,"JustJava order for "+nameString);
+        intent.putExtra(Intent.EXTRA_TEXT,priceMessage);
+        startActivity(intent.createChooser(intent,"Send Email"));
     }
 
     /**
