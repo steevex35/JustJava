@@ -82,7 +82,10 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("text/html");
         intent.putExtra(Intent.EXTRA_SUBJECT,"JustJava order for "+nameString);
         intent.putExtra(Intent.EXTRA_TEXT,priceMessage);
-        startActivity(intent.createChooser(intent,"Send Email"));
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent.createChooser(intent, "Send Email"));
+        }
     }
 
     /**
